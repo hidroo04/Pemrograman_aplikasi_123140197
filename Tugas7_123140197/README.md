@@ -44,3 +44,20 @@ Implementasi database dipisahkan ke dalam kelas `NoteLocalDataSource`. Berikut a
 
 ### iOS
 - Buka direktori `iosApp` di Xcode dan jalankan proyek tersebut.
+
+## Screenshoot aplikasi
+### Home
+<img width="280" height="620" alt="image" src="https://github.com/user-attachments/assets/923fd66a-de33-4db0-837e-e94c6d00ba49" />
+
+### Add Note
+<img width="280" height="620" alt="image" src="https://github.com/user-attachments/assets/b15f6eb8-32cc-47d2-a218-b7a15aacf9c9" />
+
+### Edit Note
+<img width="280" height="620" alt="image" src="https://github.com/user-attachments/assets/b795f8ef-869a-43cb-8248-6020e84a2735" />
+
+### Search Note
+<img width="280" height="620" alt="image" src="https://github.com/user-attachments/assets/cf4e2e51-5596-4690-a275-0933c5b94b0d" />
+
+
+
+

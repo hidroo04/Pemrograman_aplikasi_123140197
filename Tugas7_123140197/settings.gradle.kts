@@ -1,4 +1,5 @@
-rootProject.name = "Tugas7_123140197"
+
+rootProject.name = "Tugas6_1231401971"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -25,8 +26,8 @@ dependencyResolutionManagement {
             }
         }
         mavenCentral()
-        maven("https://jitpack.io")
     }
 }
 
+// Modul yang ada dalam proyek ini
 include(":composeApp")

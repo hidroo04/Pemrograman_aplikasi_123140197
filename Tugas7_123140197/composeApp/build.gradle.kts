@@ -1,16 +1,20 @@
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.sqldelight)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.sqldelight)
 }
 
 kotlin {
     androidTarget()
 
     listOf(
+        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
@@ -24,45 +28,60 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.activity.compose)
-            implementation(libs.sqldelight.android)
             implementation(libs.ktor.client.android)
-        }
-        iosMain.dependencies {
-            implementation(libs.sqldelight.native)
-            implementation(libs.compose.runtime)
-            implementation(libs.compose.foundation)
-            implementation(libs.compose.material3)
-            implementation(libs.compose.ui)
+            implementation(libs.kotlinx.coroutines.android)
+            implementation(libs.sqldelight.android)
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
+            implementation(libs.compose.materialIconsExtended)
             implementation(libs.compose.ui)
             implementation(libs.compose.components.resources)
-            implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
-            implementation("com.russhwolf:multiplatform-settings:1.3.0")
-            implementation("com.russhwolf:multiplatform-settings-coroutines:1.3.0")
-            implementation(libs.sqldelight.coroutines)
+
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
-            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.ktor.serialization.json)
+            implementation(libs.ktor.client.logging)
+
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.datetime)
+
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network.ktor)
+
+            implementation(libs.sqldelight.coroutines)
+            implementation(libs.datastore.preferences)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
+            implementation(libs.sqldelight.native)
+        }
+    }
+}
+
+sqldelight {
+    databases {
+        create("NotesDatabase") {
+            packageName.set("com.example.notes.db")
         }
     }
 }
 
 android {
-    namespace = "com.example.tugas7_123140197"
+    namespace = "com.example.tugas6_1231401971"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.example.tugas7_123140197"
+        applicationId = "com.example.tugas6_1231401971"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
@@ -79,19 +98,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 }
 
 dependencies {
     debugImplementation(libs.compose.uiTooling)
-}
-
-sqldelight {
-    databases {
-        create("NotesDatabase") {
-            packageName.set("com.example.notes.db")
-        }
-    }
 }

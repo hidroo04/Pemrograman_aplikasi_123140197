@@ -1,35 +1,46 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+# MyNotes - Kotlin Multiplatform
 
-* [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./composeApp/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./composeApp/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./composeApp/src/jvmMain/kotlin)
-    folder is the appropriate location.
 
-* [/iosApp](./iosApp/iosApp) contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+## Penerapan Database dalam Kode
 
-### Build and Run Android Application
+Proyek ini menggunakan **SQLDelight** untuk manajemen database lintas platform. Berikut adalah penjelasan mengenai cara database digunakan, disimpan, dan diterapkan dalam kodenya:
 
-To build and run the development version of the Android app, use the run configuration from the run widget
-in your IDE’s toolbar or build it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:assembleDebug
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:assembleDebug
-  ```
+### 1. Penyimpanan Data
+*   **Lokasi**: Data disimpan secara lokal di dalam perangkat menggunakan mesin SQLite.
+*   **Platform Spesifik**: Pada Android, database disimpan dalam folder data aplikasi standar. Pada iOS, database disimpan dalam direktori dokumen aplikasi. Pengaturan ini dikelola secara otomatis melalui `SqlDriver` yang spesifik untuk masing-masing platform.
 
-### Build and Run iOS Application
+### 2. Definisi Skema dan Kueri
+Skema database didefinisikan dalam file `.sq` (`NotesDatabase.sq`). SQLDelight secara otomatis menghasilkan kode Kotlin yang aman secara tipe (*type-safe*) untuk menjalankan kueri SQL tersebut.
 
-To build and run the development version of the iOS app, use the run configuration from the run widget
-in your IDE’s toolbar or open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+```sql
+CREATE TABLE NoteEntity (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    isDone INTEGER NOT NULL DEFAULT 0,
+    updatedAt INTEGER NOT NULL
+);
+```
 
----
+### 3. Arsitektur Data (*Data Source*)
+Implementasi database dipisahkan ke dalam kelas `NoteLocalDataSource`. Berikut adalah poin-poin penting penerapannya:
+*   **Reaktivitas**: Menggunakan `asFlow().mapToList()`, sehingga UI akan mendapatkan pembaruan secara *real-time* (otomatis) segera setelah data di database berubah.
+*   **Asinkron**: Operasi database dijalankan di *thread* latar belakang menggunakan `Dispatchers.IO` untuk memastikan UI tetap responsif.
+*   **Stempel Waktu**: Setiap kali catatan ditambah atau diubah, kolom `updatedAt` diperbarui secara otomatis menggunakan `kotlinx-datetime`.
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+## Fitur Utama
+
+- **Mode Lihat**: Telusuri semua catatan Anda dengan UI yang indah dan penuh warna.
+- **Mode Edit (CRUD)**: Menambah, melihat detail, atau menghapus catatan dengan mudah. Tombol hapus akan muncul saat mode ini diaktifkan.
+- **Pencarian**: Fitur pencarian cepat berdasarkan judul atau isi catatan.
+- **Bintang/Favorit**: Tandai catatan penting menggunakan ikon bintang.
+- **UI Modern**: Desain kartu berbentuk pil yang unik dengan gradasi warna yang dinamis.
+
+## Cara Membangun dan Menjalankan
+
+### Android
+- Di Windows: `.\gradlew.bat :composeApp:assembleDebug`
+- Di macOS/Linux: `./gradlew :composeApp:assembleDebug`
+
+### iOS
+- Buka direktori `iosApp` di Xcode dan jalankan proyek tersebut.

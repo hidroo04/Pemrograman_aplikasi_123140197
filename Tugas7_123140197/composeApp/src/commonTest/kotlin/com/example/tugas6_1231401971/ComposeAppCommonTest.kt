@@ -1,4 +1,4 @@
-package com.example.tugas7_123140197
+package com.example.tugas6_1231401971
 
 import kotlin.test.Test
 import kotlin.test.assertEquals

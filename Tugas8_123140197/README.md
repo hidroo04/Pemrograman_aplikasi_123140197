@@ -102,10 +102,22 @@ fun NotesScreen(
 ## Screenshot
 
 ### Device Info (Settings Screen)
-![Device Info Screenshot](docs/screenshots/device_info.png)
+<img width="232" height="516" alt="image" src="https://github.com/user-attachments/assets/9ef26848-cde2-4fe1-8f0c-320a5dd9cd88" />
 
-### Network Status Indicator
-![Network Status Screenshot](docs/screenshots/network_indicator.png)
+
+### Network Status Indicator (Data On)
+<img width="232" height="516" alt="image" src="https://github.com/user-attachments/assets/a178c669-ea8d-4362-bee6-abfb0b5493a6" />
+
+
+### Network Status Indicator (Data Off)
+<img width="232" height="516" alt="image" src="https://github.com/user-attachments/assets/9bebebe4-3921-4517-98a0-d11d967f0a20" />
+
+
+### Vidio Demo
+https://github.com/user-attachments/assets/fa90c857-d80c-4250-b820-20f4854e8cc3
+
+
+
 
 ---
 

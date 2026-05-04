@@ -1,0 +1,31 @@
+CREATE TABLE NoteEntity (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    isDone INTEGER NOT NULL DEFAULT 0,
+    updatedAt INTEGER NOT NULL
+);
+
+getAllNotes:
+SELECT * FROM NoteEntity ORDER BY updatedAt DESC;
+
+getNoteById:
+SELECT * FROM NoteEntity WHERE id = :id;
+
+insertNote:
+INSERT INTO NoteEntity(title, content, isDone, updatedAt)
+VALUES (:title, :content, :isDone, :updatedAt);
+
+updateNote:
+UPDATE NoteEntity
+SET title = :title, content = :content, isDone = :isDone, updatedAt = :updatedAt
+WHERE id = :id;
+
+deleteNote:
+DELETE FROM NoteEntity WHERE id = :id;
+
+updateDoneStatus:
+UPDATE NoteEntity SET isDone = :isDone, updatedAt = :updatedAt WHERE id = :id;
+
+searchNotes:
+SELECT * FROM NoteEntity WHERE title LIKE ('%' || :query || '%') OR content LIKE ('%' || :query || '%') ORDER BY updatedAt DESC;

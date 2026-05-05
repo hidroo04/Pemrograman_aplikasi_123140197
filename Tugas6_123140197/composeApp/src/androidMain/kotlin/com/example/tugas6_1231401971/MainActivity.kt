@@ -12,7 +12,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MaterialTheme {
-                App()   // <-- fungsi utama dari commonMain/App.kt
+                App(newsApiKey = BuildConfig.NEWS_API_KEY)   // <-- fungsi utama dari commonMain/App.kt
             }
         }
     }

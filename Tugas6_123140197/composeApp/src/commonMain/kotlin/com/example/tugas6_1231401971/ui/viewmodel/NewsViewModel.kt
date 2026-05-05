@@ -10,87 +10,41 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-
+/**
+ * ViewModel for the News Screen.
+ * Manages the state of the news list and handles user interactions.
+ */
 class NewsViewModel(
     private val repository: ArticleRepository
 ) : ViewModel() {
 
-    // ── State untuk daftar artikel ──────────────────────────
-    // Awal = Loading karena kita langsung fetch di init {}
     private val _newsState = MutableStateFlow<UiState<List<Article>>>(UiState.Loading)
     val newsState: StateFlow<UiState<List<Article>>> = _newsState.asStateFlow()
 
-    // ── State untuk create artikel (POST) ───────────────────
-    // null = tidak ada operasi POST yang sedang berjalan
-    private val _createState = MutableStateFlow<UiState<Article>?>(null)
-    val createState: StateFlow<UiState<Article>?> = _createState.asStateFlow()
-
-    // ── Simpan semua artikel asli untuk kebutuhan filtering ─
-    private var cachedArticles: List<Article> = emptyList()
-
-    // Langsung muat artikel begitu ViewModel dibuat
     init {
-        loadArticles()
+        loadNews()
     }
 
-
-    fun loadArticles() {
+    /**
+     * Fetches the latest news from the repository and updates the UI state.
+     */
+    fun loadNews() {
         viewModelScope.launch {
-            // Step 1: tampilkan loading spinner
             _newsState.value = UiState.Loading
-
-            // Step 2: minta data ke repository
-            repository.getArticles()
+            repository.getLatestNews()
                 .onSuccess { articles ->
-                    // Step 3a: berhasil
-                    cachedArticles = articles
                     _newsState.value = UiState.Success(articles)
                 }
                 .onFailure { error ->
-                    // Step 3b: gagal (tidak ada internet, dll)
                     _newsState.value = UiState.Error(
-                        error.message ?: "Gagal memuat artikel. Cek koneksi internet."
+                        error.message ?: "Gagal memuat berita. Periksa koneksi internet Anda."
                     )
                 }
         }
     }
 
-    fun refresh() = loadArticles()
-
-
-    fun createArticle(title: String, body: String) {
-        viewModelScope.launch {
-            _createState.value = UiState.Loading
-
-            repository.createArticle(title, body)
-                .onSuccess { newArticle ->
-                    _createState.value = UiState.Success(newArticle)
-
-                    val current = cachedArticles
-                    cachedArticles = listOf(newArticle) + current
-                    _newsState.value = UiState.Success(cachedArticles)
-                }
-                .onFailure { error ->
-                    _createState.value = UiState.Error(
-                        error.message ?: "Gagal membuat artikel"
-                    )
-                }
-        }
-    }
-
-    fun deleteArticle(articleId: Int) {
-        viewModelScope.launch {
-            repository.deleteArticle(articleId)
-                .onSuccess {
-                    cachedArticles = cachedArticles.filter { it.id != articleId }
-                    _newsState.value = UiState.Success(cachedArticles)
-                }
-                .onFailure {
-                }
-        }
-    }
-
-    fun resetCreateState() {
-        _createState.value = null
-    }
+    /**
+     * Triggers a refresh of the news list.
+     */
+    fun refresh() = loadNews()
 }

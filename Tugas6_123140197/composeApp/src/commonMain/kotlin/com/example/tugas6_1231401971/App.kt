@@ -15,9 +15,9 @@ import com.example.tugas6_1231401971.ui.viewmodel.NewsViewModel
 
 
 @Composable
-fun App() {
+fun App(newsApiKey: String = "") {
     val httpClient = remember { HttpClientFactory.create() }
-    val repository = remember { ArticleRepository(httpClient) }
+    val repository = remember { ArticleRepository(httpClient, newsApiKey) }
     val viewModel  = viewModel { NewsViewModel(repository) }
 
     var selectedArticle by remember { mutableStateOf<Article?>(null) }

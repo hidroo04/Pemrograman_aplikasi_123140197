@@ -1,35 +1,104 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+# News App
 
-* [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./composeApp/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./composeApp/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./composeApp/src/jvmMain/kotlin)
-    folder is the appropriate location.
+## Implementasi Fitur Utama
 
-* [/iosApp](./iosApp/iosApp) contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+### 1. Fetch Berita dari Public API (NewsAPI)
+Aplikasi menggunakan **Ktor Client** sebagai library networking. Data diambil menggunakan endpoint `top-headlines` dan diautentikasi menggunakan API Key yang aman.
 
-### Build and Run Android Application
+**Implementasi API (`ArticleApi.kt`):**
+```kotlin
+class ArticleApi(private val client: HttpClient) {
+    private val baseUrl = "https://newsapi.org/v2/"
 
-To build and run the development version of the Android app, use the run configuration from the run widget
-in your IDE’s toolbar or build it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:assembleDebug
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:assembleDebug
-  ```
+    suspend fun getLatestNews(apiKey: String, country: String = "us"): NewsResponse {
+        return client.get("${baseUrl}top-headlines") {
+            parameter("apiKey", apiKey)
+            parameter("country", country)
+        }.body()
+    }
+}
+```
 
-### Build and Run iOS Application
+### 2. Repository Pattern
+Pola Repository digunakan untuk mengabstraksi sumber data. Hal ini memisahkan logika bisnis dari implementasi networking, sehingga kode lebih modular.
 
-To build and run the development version of the iOS app, use the run configuration from the run widget
-in your IDE’s toolbar or open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+**Implementasi Repository (`ArticleRepository.kt`):**
+```kotlin
+class ArticleRepository(client: HttpClient, private val apiKey: String) {
+    private val api = ArticleApi(client)
 
----
+    suspend fun getLatestNews(): Result<List<Article>> {
+        return try {
+            val response = api.getLatestNews(apiKey)
+            if (response.status == "ok") {
+                Result.success(response.articles)
+            } else {
+                Result.failure(Exception("Gagal mengambil data: ${response.status}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+}
+```
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+### 3. Proper Loading, Success, dan Error States
+Status UI dikelola secara eksplisit menggunakan `sealed class`. Hal ini memastikan aplikasi menangani setiap kondisi (loading, data tersedia, atau terjadi kesalahan) dengan baik.
+
+**Model State (`UiState.kt`):**
+```kotlin
+sealed class UiState<out T> {
+    data object Loading : UiState<Nothing>()
+    data class Success<T>(val data: T) : UiState<T>()
+    data class Error(val message: String) : UiState<Nothing>()
+}
+```
+
+### 4. Tampilan List Artikel
+Daftar berita ditampilkan menggunakan `LazyColumn` untuk performa yang optimal. Setiap item menampilkan judul, deskripsi, dan gambar menggunakan library **Coil**.
+
+**Komponen Card (`ArticleCard.kt`):**
+```kotlin
+@Composable
+fun ArticleCard(article: Article, onClick: () -> Unit) {
+    Row(modifier = Modifier.clickable { onClick() }) {
+        // Menampilkan Image dengan Coil
+        AsyncImage(
+            model = article.urlToImage,
+            contentDescription = article.title,
+            modifier = Modifier.size(100.dp).clip(RoundedCornerShape(20.dp))
+        )
+        Column {
+            Text(text = article.title, fontWeight = FontWeight.Bold)
+            Text(text = "• ${article.publishedAt}")
+        }
+    }
+}
+```
+
+### 5. Detail Screen
+Saat item diklik, aplikasi menavigasi ke `DetailScreen` yang menampilkan konten lengkap artikel, gambar resolusi penuh, dan link untuk membaca berita selengkapnya di web browser.
+
+### 6. Pull to Refresh Functionality
+Aplikasi menggunakan `PullToRefreshBox` dari Material 3 untuk memungkinkan pengguna memperbarui berita dengan cara mengusap layar ke bawah (swipe-to-refresh).
+
+**Logika Refresh (`NewsScreen.kt`):**
+```kotlin
+PullToRefreshBox(
+    isRefreshing = isRefreshing,
+    onRefresh = {
+        isRefreshing = true
+        viewModel.refresh()
+    }
+) {
+    // Konten LazyColumn berada di sini
+}
+```
+
+## Keamanan API Key
+Untuk menjaga keamanan, API Key **tidak disimpan langsung di dalam kode** (hardcoded). Sebaliknya, key disimpan di dalam file `local.properties` yang diabaikan oleh Git.
+
+**Langkah Konfigurasi:**
+1. Tambahkan `NEWS_API_KEY=your_key` di `local.properties`.
+2. Gradle akan membaca key tersebut dan menyediakannya melalui `BuildConfig.NEWS_API_KEY`.
+3. Key kemudian diinjeksi dari platform Android ke common code saat aplikasi dimulai.

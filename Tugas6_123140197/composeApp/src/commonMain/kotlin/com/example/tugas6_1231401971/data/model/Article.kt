@@ -1,30 +1,22 @@
 package com.example.tugas6_1231401971.data.model
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+/**
+ * Model for NewsAPI.org response.
+ */
+@Serializable
+data class NewsResponse(
+    val status: String = "",
+    val totalResults: Int = 0,
+    val articles: List<Article> = emptyList()
+)
 
 @Serializable
 data class Article(
-    val id: Int,
-
-    @SerialName("userId")
-    val userId: Int,
-
-    val title: String,
-
-    val body: String
-) {
-
-    val imageUrl: String
-        get() = "https://picsum.photos/seed/$id/600/300"
-}
-
-@Serializable
-data class CreateArticleRequest(
-    val title: String,
-    val body: String,
-
-    @SerialName("userId")
-    val userId: Int = 1
+    val title: String = "",
+    val url: String = "",
+    val publishedAt: String? = null,
+    val description: String? = null,
+    val urlToImage: String? = null
 )

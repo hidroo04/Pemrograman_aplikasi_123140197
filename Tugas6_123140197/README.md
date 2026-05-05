@@ -102,3 +102,16 @@ Untuk menjaga keamanan, API Key **tidak disimpan langsung di dalam kode** (hardc
 1. Tambahkan `NEWS_API_KEY=your_key` di `local.properties`.
 2. Gradle akan membaca key tersebut dan menyediakannya melalui `BuildConfig.NEWS_API_KEY`.
 3. Key kemudian diinjeksi dari platform Android ke common code saat aplikasi dimulai.
+
+## Screenshot Aplikasi
+### Home
+<img width="257" height="574" alt="image" src="https://github.com/user-attachments/assets/26ff4351-13c8-46d7-a8f5-42d4feed2d9c" />
+
+### Article
+<img width="257" height="574" alt="image" src="https://github.com/user-attachments/assets/c05ab4fc-9bf7-4fb0-836d-0300a312a4ea" />
+
+### Video
+https://github.com/user-attachments/assets/bb1ae81f-588d-4b5a-80a2-db3a7970d29c
+
+
+

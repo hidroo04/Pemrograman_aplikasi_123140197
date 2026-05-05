@@ -1,5 +1,6 @@
 package org.example.tugas3kmp
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,8 +30,9 @@ fun ActionButton(
                 .height(50.dp),
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF6650A4)
-            )
+                containerColor = Color.White.copy(alpha = 0.25f)
+            ),
+            border = BorderStroke(1.dp, Color.White.copy(alpha = 0.4f))
         ) {
             Text(
                 text = text,
@@ -48,8 +50,9 @@ fun ActionButton(
                 .height(50.dp),
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.outlinedButtonColors(
-                contentColor = Color(0xFF6650A4)
-            )
+                contentColor = Color.White
+            ),
+            border = BorderStroke(1.dp, Color.White.copy(alpha = 0.6f))
         ) {
             Text(
                 text = text,

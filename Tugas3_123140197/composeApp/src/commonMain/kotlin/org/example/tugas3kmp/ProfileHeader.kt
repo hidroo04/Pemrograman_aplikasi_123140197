@@ -1,6 +1,8 @@
 package org.example.tugas3kmp
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -34,7 +36,8 @@ fun ProfileHeader(
             modifier = Modifier
                 .size(100.dp)
                 .clip(CircleShape)
-                .background(Color(0xFF6650A4)),
+                .background(Color.White.copy(alpha = 0.2f))
+                .border(BorderStroke(2.dp, Color.White.copy(alpha = 0.5f)), CircleShape),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -47,16 +50,16 @@ fun ProfileHeader(
 
         Text(
             text = name,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color(0xFF1C1B1F)
+            fontSize = 26.sp,
+            fontWeight = FontWeight.ExtraBold,
+            color = Color.White
         )
 
 
         Text(
             text = bio,
             fontSize = 14.sp,
-            color = Color(0xFF49454F),
+            color = Color.White.copy(alpha = 0.8f),
             textAlign = TextAlign.Center,
             lineHeight = 20.sp
         )

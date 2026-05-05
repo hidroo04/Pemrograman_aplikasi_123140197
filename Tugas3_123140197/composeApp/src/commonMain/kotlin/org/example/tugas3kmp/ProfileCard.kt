@@ -1,5 +1,6 @@
 package org.example.tugas3kmp
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -22,31 +23,32 @@ fun ProfileCard(
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(24.dp),
+        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.3f)),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp
+            defaultElevation = 0.dp
         ),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = Color.White.copy(alpha = 0.15f)
         )
     ) {
 
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(0.dp)
         ) {
 
             Text(
                 text = title,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = Color(0xFF6650A4),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
-            Divider(color = Color(0xFFE0E0E0), thickness = 1.dp)
+            Divider(color = Color.White.copy(alpha = 0.2f), thickness = 1.dp)
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -77,15 +79,15 @@ fun InfoItem(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = label,
-                fontSize = 11.sp,
-                color = Color(0xFF9E9E9E),
+                fontSize = 12.sp,
+                color = Color.White.copy(alpha = 0.7f),
                 fontWeight = FontWeight.Medium
             )
             Text(
                 text = value,
-                fontSize = 14.sp,
-                color = Color(0xFF1C1B1F),
-                fontWeight = FontWeight.Normal
+                fontSize = 15.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Medium
             )
         }
     }

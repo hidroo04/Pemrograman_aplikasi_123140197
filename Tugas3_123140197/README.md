@@ -1,48 +1,59 @@
-This is a Kotlin Multiplatform project targeting Android, iOS, Desktop (JVM).
+# Profile Screen
+## Komponen Utama
 
-* [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./composeApp/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./composeApp/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./composeApp/src/jvmMain/kotlin)
-    folder is the appropriate location.
+### 1. ProfileHeader
+Komponen ini menampilkan bagian atas profil, termasuk inisial pengguna di dalam lingkaran, nama, dan bio singkat.
+- **Glass Effect**: Lingkaran avatar memiliki latar belakang putih transparan (`alpha = 0.2f`) dengan border putih yang lebih jelas.
+- **Teks**: Nama menggunakan font `ExtraBold` dengan warna putih agar kontras dengan latar belakang gradien.
 
-* [/iosApp](./iosApp/iosApp) contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+### 2. InfoItem
+Komponen baris tunggal untuk menampilkan detail informasi seperti Email, Nomor Telepon, dan Lokasi.
+- **Layout**: Terdiri dari ikon (emoji) dan kolom teks (label dan nilai).
+- **Styling**: Label menggunakan warna putih transparan untuk menciptakan hierarki visual, sementara nilai utama menggunakan warna putih solid.
 
-### Build and Run Android Application
+### 3. ProfileCard
+Kontainer utama yang membungkus kumpulan `InfoItem`.
+- **Glassmorphism Core**: Menggunakan `Card` dengan `containerColor` putih sangat transparan (`alpha = 0.15f`).
+- **Visual Cues**: Memiliki `BorderStroke` putih tipis dan `elevation` yang diatur ke `0.dp` untuk memperkuat estetika "kaca datar".
+- **Padding & Shape**: Menggunakan sudut melengkung yang besar (`24.dp`) dan padding internal yang luas untuk kenyamanan visual.
 
-To build and run the development version of the Android app, use the run configuration from the run widget
-in your IDE’s toolbar or build it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:assembleDebug
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:assembleDebug
-  ```
-
-### Build and Run Desktop (JVM) Application
-
-To build and run the development version of the desktop app, use the run configuration from the run widget
-in your IDE’s toolbar or run it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:run
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:run
-  ```
-
-### Build and Run iOS Application
-
-To build and run the development version of the iOS app, use the run configuration from the run widget
-in your IDE’s toolbar or open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+### 4. ActionButton
+Tombol kustom yang mengikuti tema Glassmorphism.
+- **Primary**: Tombol dengan latar belakang putih transparan dan border.
+- **Secondary (Outline)**: Tombol dengan border putih yang lebih tebal tanpa latar belakang solid.
 
 ---
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+## Implementasi Kode
+
+### ProfileScreen (Main Layout)
+Layar utama menggunakan `Box` atau `Column` dengan `Brush.verticalGradient` sebagai latar belakang untuk memberikan efek kedalaman pada elemen "kaca" di atasnya.
+
+```kotlin
+Column(
+    modifier = Modifier
+        .fillMaxSize()
+        .background(
+            brush = Brush.verticalGradient(
+                colors = listOf(Color(0xFF6650A4), Color(0xFFFF4081))
+            )
+        )
+) {
+}
+```
+
+### Efek Glass pada Card
+```kotlin
+Card(
+    shape = RoundedCornerShape(24.dp),
+    border = BorderStroke(1.dp, Color.White.copy(alpha = 0.3f)),
+    colors = CardDefaults.cardColors(
+        containerColor = Color.White.copy(alpha = 0.15f)
+    ),
+    elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+) {
+}
+```
+
+## Screenshot 
+

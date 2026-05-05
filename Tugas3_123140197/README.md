@@ -1,28 +1,4 @@
 # Profile Screen
-## Komponen Utama
-
-### 1. ProfileHeader
-Komponen ini menampilkan bagian atas profil, termasuk inisial pengguna di dalam lingkaran, nama, dan bio singkat.
-- **Glass Effect**: Lingkaran avatar memiliki latar belakang putih transparan (`alpha = 0.2f`) dengan border putih yang lebih jelas.
-- **Teks**: Nama menggunakan font `ExtraBold` dengan warna putih agar kontras dengan latar belakang gradien.
-
-### 2. InfoItem
-Komponen baris tunggal untuk menampilkan detail informasi seperti Email, Nomor Telepon, dan Lokasi.
-- **Layout**: Terdiri dari ikon (emoji) dan kolom teks (label dan nilai).
-- **Styling**: Label menggunakan warna putih transparan untuk menciptakan hierarki visual, sementara nilai utama menggunakan warna putih solid.
-
-### 3. ProfileCard
-Kontainer utama yang membungkus kumpulan `InfoItem`.
-- **Glassmorphism Core**: Menggunakan `Card` dengan `containerColor` putih sangat transparan (`alpha = 0.15f`).
-- **Visual Cues**: Memiliki `BorderStroke` putih tipis dan `elevation` yang diatur ke `0.dp` untuk memperkuat estetika "kaca datar".
-- **Padding & Shape**: Menggunakan sudut melengkung yang besar (`24.dp`) dan padding internal yang luas untuk kenyamanan visual.
-
-### 4. ActionButton
-Tombol kustom yang mengikuti tema Glassmorphism.
-- **Primary**: Tombol dengan latar belakang putih transparan dan border.
-- **Secondary (Outline)**: Tombol dengan border putih yang lebih tebal tanpa latar belakang solid.
-
----
 
 ## Implementasi Kode
 
@@ -57,3 +33,4 @@ Card(
 
 ## Screenshot 
 
+<img width="257" height="574" alt="image" src="https://github.com/user-attachments/assets/259ed4df-177c-4085-8fa1-90bcc1302c34" />

@@ -1,48 +1,118 @@
-This is a Kotlin Multiplatform project targeting Android, iOS, Desktop (JVM).
+# Dokumentasi Implementasi Profile Module (MVVM + Acrylic UI)
 
-* [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./composeApp/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./composeApp/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./composeApp/src/jvmMain/kotlin)
-    folder is the appropriate location.
-
-* [/iosApp](./iosApp/iosApp) contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
-
-### Build and Run Android Application
-
-To build and run the development version of the Android app, use the run configuration from the run widget
-in your IDE’s toolbar or build it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:assembleDebug
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:assembleDebug
-  ```
-
-### Build and Run Desktop (JVM) Application
-
-To build and run the development version of the desktop app, use the run configuration from the run widget
-in your IDE’s toolbar or run it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:run
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:run
-  ```
-
-### Build and Run iOS Application
-
-To build and run the development version of the iOS app, use the run configuration from the run widget
-in your IDE’s toolbar or open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+Repositori ini berisi implementasi modul profil menggunakan Jetpack Compose dengan arsitektur **MVVM (Model-View-ViewModel)**, fitur **Edit Profile** lengkap, dan tema **Acrylic Material3**.
 
 ---
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+## 1. Implementasi MVVM Pattern
+
+Pola MVVM memisahkan logika bisnis dan data dari tampilan (UI).
+
+### **ProfileUiState (Data Class)**
+Menyediakan *single source of truth* untuk seluruh state di layar profil.
+```kotlin
+data class ProfileUiState(
+    val name: String = "...",
+    val bio: String = "...",
+    // ... data lainnya
+    val isDarkMode: Boolean = false,
+    val isEditMode: Boolean = false,
+    val editName: String = "",
+    val editBio: String = ""
+    // ... field edit lainnya
+)
+```
+
+### **ProfileViewModel (StateFlow)**
+Mengelola state menggunakan `StateFlow` agar UI bersifat reaktif terhadap perubahan data.
+```kotlin
+class ProfileViewModel : ViewModel() {
+    private val _uiState = MutableStateFlow(ProfileUiState())
+    val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
+
+    fun toggleDarkMode() {
+        _uiState.update { it.copy(isDarkMode = !it.isDarkMode) }
+    }
+
+    fun saveProfile() {
+        _uiState.update { currentState ->
+            val finalName = currentState.editName.ifBlank { currentState.name }
+            currentState.copy(
+                name = finalName,
+                initials = generateInitials(finalName),
+                isEditMode = false
+            )
+        }
+    }
+}
+```
+
+---
+
+## 2. Fitur Edit Profile
+
+Fitur ini memungkinkan pengguna mengubah data diri melalui form yang muncul secara kondisional.
+
+### **State Hoisting untuk TextField**
+Nilai dari `TextField` tidak disimpan di dalam Composable, melainkan ditarik ke atas (*hoisted*) ke ViewModel.
+```kotlin
+// Di ProfileScreen.kt
+EditProfileForm(
+    editName = uiState.editName,
+    onNameChange = { viewModel.onEditNameChange(it) },
+    onSave = { viewModel.saveProfile() },
+    // ...
+)
+```
+
+### **Form & Save Button**
+Form menggunakan `OutlinedTextField` dan tombol "Simpan" yang memicu pembaruan di ViewModel.
+```kotlin
+OutlinedTextField(
+    value = editName,
+    onValueChange = onNameChange,
+    label = { Text("Nama") }
+)
+
+Button(onClick = onSave) {
+    Text("Simpan")
+}
+```
+
+---
+
+## 3. Fitur Dark Mode Toggle
+
+Tema gelap/terang dikelola sepenuhnya oleh ViewModel dan mempengaruhi palet warna aplikasi secara global.
+
+### **Switch State di ViewModel**
+State `isDarkMode` disimpan di ViewModel dan dikonsumsi oleh `ProfileScreen` untuk menentukan warna latar belakang.
+```kotlin
+// Di DarkModeToggle.kt
+Switch(
+    checked = isDarkMode,
+    onCheckedChange = { onToggle() } // Memanggil viewModel.toggleDarkMode()
+)
+```
+
+### **Penerapan Tema Acrylic**
+Menggunakan perpaduan warna transparan dan efek blur untuk menciptakan tampilan kaca.
+```kotlin
+val cardColor = if (isDarkMode) 
+    Color.White.copy(alpha = 0.08f) 
+else 
+    Color.White.copy(alpha = 0.5f)
+
+Card(
+    colors = CardDefaults.cardColors(containerColor = cardColor),
+    shape = RoundedCornerShape(24.dp),
+    border = BorderStroke(1.dp, borderColor)
+) { ... }
+```
+
+---
+
+## Cara Penggunaan
+1. Pastikan project menggunakan **Material3** dan **Jetpack Compose**.
+2. Modul ini menggunakan `androidx.lifecycle.viewmodel.compose` untuk integrasi ViewModel.
+3. Untuk melihat efek Acrylic secara maksimal, jalankan pada perangkat dengan **Android 12 (API 31)** atau lebih tinggi karena penggunaan `Modifier.blur()`.

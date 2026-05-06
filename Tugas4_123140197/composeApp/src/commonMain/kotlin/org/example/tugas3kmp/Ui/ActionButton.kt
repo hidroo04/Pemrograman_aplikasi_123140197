@@ -27,7 +27,7 @@ fun ActionButton(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(20.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF6650A4)
             )
@@ -46,7 +46,7 @@ fun ActionButton(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(20.dp),
             colors = ButtonDefaults.outlinedButtonColors(
                 contentColor = Color(0xFF6650A4)
             )

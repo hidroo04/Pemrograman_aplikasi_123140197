@@ -1,5 +1,6 @@
 package org.example.tugas3kmp.Ui
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -20,13 +21,15 @@ fun ProfileCard(
     isDarkMode: Boolean = false,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    val cardColor = if (isDarkMode) Color(0xFF2C2C2C) else Color.White
+    val cardColor = if (isDarkMode) Color.White.copy(alpha = 0.08f) else Color.White.copy(alpha = 0.5f)
+    val borderColor = if (isDarkMode) Color.White.copy(alpha = 0.15f) else Color.White.copy(alpha = 0.3f)
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = cardColor)
+        shape = RoundedCornerShape(24.dp),
+        border = BorderStroke(1.dp, borderColor),
+        colors = CardDefaults.cardColors(containerColor = cardColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
 
         Column(

@@ -23,7 +23,7 @@ fun ProfileHeader(
     isDarkMode: Boolean = false
 ) {
     val nameColor = if (isDarkMode) Color.White else Color(0xFF1C1B1F)
-    val bioColor  = if (isDarkMode) Color(0xFFBBBBBB) else Color(0xFF49454F)
+    val bioColor  = if (isDarkMode) Color.White.copy(alpha = 0.7f) else Color(0xFF49454F)
 
     Column(
         modifier = Modifier

@@ -12,5 +12,9 @@ data class ProfileUiState(
     val isDarkMode: Boolean = false,
     val isEditMode: Boolean = false,
     val editName: String = "",
-    val editBio: String = ""
+    val editBio: String = "",
+    val editEmail: String = "",
+    val editPhone: String = "",
+    val editLocation: String = "",
+    val editStudy: String = ""
 )

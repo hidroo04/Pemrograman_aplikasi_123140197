@@ -113,5 +113,21 @@ if (isLoading) {
 
 ## Screenshot Aplikasi
 
+### landing Page
+<img width="232" height="516" alt="image" src="https://github.com/user-attachments/assets/3740b8b6-0c1c-4499-9f7c-e7d04e46c58b" />
+
+### Chat Page
+<img width="232" height="516" alt="image" src="https://github.com/user-attachments/assets/31ec3fac-31b9-4bbc-968f-bd9ac05c1fa5" />
+<br></br>
+<img width="232" height="516" alt="image" src="https://github.com/user-attachments/assets/72254e7e-8a7a-455e-a34e-e037459a672d" />
+
+### Video Dokumentasi
+https://github.com/user-attachments/assets/9ce51cd3-b298-4809-987c-7baa6e3a3c8c
+
+
+
+
+
+
 ---
 

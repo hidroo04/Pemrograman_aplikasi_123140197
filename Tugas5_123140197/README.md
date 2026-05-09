@@ -425,6 +425,13 @@ fun MainScreen() {
 ---
 
 ## 📸 Screenshot
+<img width="232" height="516" alt="image" src="https://github.com/user-attachments/assets/d33ff364-4a5d-4a52-930b-3907b5dacb53" />
+<br>
+<img width="232" height="516" alt="image" src="https://github.com/user-attachments/assets/13d1aa93-efcb-4dc7-9336-257fa3e32a0c" />
+<br>
+<img width="232" height="516" alt="image" src="https://github.com/user-attachments/assets/e9cf141d-8fbb-4253-ad7b-c0871cb22cdd" />
+
+
 
 
 ---

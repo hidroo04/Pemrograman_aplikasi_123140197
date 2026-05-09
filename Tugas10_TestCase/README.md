@@ -71,4 +71,18 @@ fun testEmptyStateIsDisplayed() {
 ---
 
 ## Screenshot Hasil
+<img width="1248" height="575" alt="Screenshot 2026-05-08 215540" src="https://github.com/user-attachments/assets/a51079fd-c009-45c1-ba51-2eeb31bdca04" />
+<br>
+<img width="1102" height="542" alt="image" src="https://github.com/user-attachments/assets/2e296f90-92d8-4475-9b66-75647abfc820" />
+<br>
+<img width="1058" height="520" alt="image" src="https://github.com/user-attachments/assets/8214495e-b921-48f1-a27e-86b8dd79102c" />
+
+## Video Test
+https://github.com/user-attachments/assets/fe320271-72b0-4897-827b-9538317bb817
+
+
+
+
+
+
 

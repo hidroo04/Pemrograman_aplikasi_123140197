@@ -2,15 +2,6 @@
 
 Noaii adalah aplikasi chatbot cerdas berbasis Android yang menggabungkan kemampuan **Groq AI (Llama 3.1 8B)** dan **USDA Food Database** untuk memberikan analisis nutrisi makanan.
 
-## Fitur Utama
-
-1.  **Liquid Glass UI**: Desain modern dengan estetika *glassmorphism*, menggunakan degradasi warna *teal-to-black* dan bubble chat transparan.
-2.  **AI Conversation (Groq)**: Menggunakan model `llama-3.1-8b-instant` untuk respon yang sangat cepat, cerdas, dan hemat token.
-3.  **Food Nutrition Analysis**: Integrasi dengan API USDA untuk mengambil data nutrisi mentah (kalori, protein, lemak, karbohidrat) yang kemudian dianalisis oleh AI.
-4.  **Local Analysis Caching**: Hasil analisis makanan disimpan di database lokal (**Room**). Jika pengguna menanyakan makanan yang sama, Noaii akan menjawab secara instan tanpa memanggil API.
-5.  **Smart Context Management**: Aplikasi meringkas riwayat percakapan agar AI tetap memiliki konteks tanpa menghabiskan kuota token.
-6.  **Session-Based Chat**: Setiap kali aplikasi dibuka, percakapan dimulai dari awal untuk pengalaman yang bersih, sementara riwayat lama tetap tersimpan aman di database.
-
 ## Arsitektur & Teknologi
 
 *   **UI Layer**: Jetpack Compose (Material 3) dengan kustomisasi *Liquid Glass*.
